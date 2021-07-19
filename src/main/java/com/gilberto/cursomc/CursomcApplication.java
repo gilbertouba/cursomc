@@ -8,8 +8,17 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.gilberto.cursomc.domain.Categoria;
+import com.gilberto.cursomc.domain.Cidade;
+import com.gilberto.cursomc.domain.Cliente;
+import com.gilberto.cursomc.domain.Endereco;
+import com.gilberto.cursomc.domain.Estado;
 import com.gilberto.cursomc.domain.Produto;
+import com.gilberto.cursomc.domain.enums.TipoCliente;
 import com.gilberto.cursomc.repositories.CategoriaRepository;
+import com.gilberto.cursomc.repositories.CidadeRepository;
+import com.gilberto.cursomc.repositories.ClienteRepository;
+import com.gilberto.cursomc.repositories.EnderecoRepository;
+import com.gilberto.cursomc.repositories.EstadoRepository;
 import com.gilberto.cursomc.repositories.ProdutoRepository;
 
 @SpringBootApplication
@@ -19,6 +28,18 @@ public class CursomcApplication implements CommandLineRunner{
 
 	@Autowired
 	private ProdutoRepository produtoRepository;
+	
+	@Autowired
+	private EstadoRepository estadoRepository;
+
+	@Autowired
+	private CidadeRepository cidadeRepository;
+
+	@Autowired
+	private ClienteRepository clienteRepository;
+	
+	@Autowired
+	private EnderecoRepository enderecoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(CursomcApplication.class, args);
@@ -43,13 +64,48 @@ public class CursomcApplication implements CommandLineRunner{
 		cat1.getProdutos().addAll(Arrays.asList(p1,p2,p3));
 		cat2.getProdutos().addAll(Arrays.asList(p2));
 		
+		Estado est1 = new Estado(null,"Minas Gerais");
+		Estado est2 = new Estado(null,"São Paulo");
+		
+		Cidade cid1 = new Cidade(null,"Uberlândia",est1);
+		Cidade cid2 = new Cidade(null,"São Paulo",est2);
+		Cidade cid3 = new Cidade(null,"Campinas",est2);
 		
 		
+		est1.getCidades().addAll(Arrays.asList(cid1));
+		est2.getCidades().addAll(Arrays.asList(cid2,cid3));		
+		
+		Cliente cli1 = new Cliente(null,"Gilberto","gilbertouba@gmail.com","04008220674",TipoCliente.PESSOAFISICA);
+		cli1.getTelefones().addAll(Arrays.asList("991544824","33130015"));
+		
+		Endereco e1 = new Endereco(null, "Rua Nair borges bento","504" ,"-", "Manuel Mendes", "38082167", cli1, cid1);
+		
+		Endereco e2 = new Endereco(null, "Rua Nair borges bento2","5041" ,"-", "Manuel Mendes2", "38082168", cli1, cid2);
+		
+		cli1.getEnderecos().addAll(Arrays.asList(e1,e2));
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		estadoRepository.saveAll(Arrays.asList(est1,est2));
+		
+		cidadeRepository.saveAll(Arrays.asList(cid1,cid2,cid3));
 		
 		
 		categoriaRepository.saveAll(Arrays.asList(cat1,cat2));
-					
+		
 		produtoRepository.saveAll(Arrays.asList(p1,p2,p3));
+		
+		clienteRepository.saveAll(Arrays.asList(cli1));
+		
+		enderecoRepository.saveAll(Arrays.asList(e1,e2));
+		
 		
 		
 	}
