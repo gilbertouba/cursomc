@@ -2,7 +2,9 @@ package com.gilberto.cursomc.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,31 +34,10 @@ public class Produto implements Serializable{
 	)
 	
 	private List<Categoria> categorias = new ArrayList<>();
+	private Set<ItemPedido> itens = new HashSet<>();
 
 	public Produto() {
 			// TODO Auto-generated constructor stub
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + id;
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Produto other = (Produto) obj;
-		if (id != other.id)
-			return false;
-		return true;
 	}
 
 	public Produto(int id, String nome, double preco) {
@@ -65,7 +46,16 @@ public class Produto implements Serializable{
 		this.nome = nome;
 		this.preco = preco;
 	}
-
+	
+	public List<Pedido> getPedidos(){
+		List<Pedido> lista = new ArrayList<>();
+		
+		for (ItemPedido x : this.itens) {
+			lista.add(x.getPedido());
+		}
+		return lista;
+		
+	}
 	public int getId() {
 		return id;
 	}
@@ -88,5 +78,37 @@ public class Produto implements Serializable{
 
 	public void setCategorias(List<Categoria> categorias) {
 		this.categorias = categorias;
+	}
+
+	public Set<ItemPedido> getItens() {
+		return itens;
+	}
+
+	public void setItens(Set<ItemPedido> itens) {
+		this.itens = itens;
 	} 
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Produto other = (Produto) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
+	
+	
 }
